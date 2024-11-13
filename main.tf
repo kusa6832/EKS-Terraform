@@ -1,3 +1,4 @@
+//cloud selector
 provider "aws" {
   region = "ap-south-1"
 }
@@ -9,7 +10,7 @@ resource "aws_vpc" "devopsshack_vpc" {
     Name = "devopsshack-vpc"
   }
 }
-
+//public subnet creation
 resource "aws_subnet" "devopsshack_subnet" {
   count = 2
   vpc_id                  = aws_vpc.devopsshack_vpc.id
@@ -21,7 +22,7 @@ resource "aws_subnet" "devopsshack_subnet" {
     Name = "devopsshack-subnet-${count.index}"
   }
 }
-
+//internet gateway creation
 resource "aws_internet_gateway" "devopsshack_igw" {
   vpc_id = aws_vpc.devopsshack_vpc.id
 
@@ -29,7 +30,7 @@ resource "aws_internet_gateway" "devopsshack_igw" {
     Name = "devopsshack-igw"
   }
 }
-
+// route table creation for public subnet
 resource "aws_route_table" "devopsshack_route_table" {
   vpc_id = aws_vpc.devopsshack_vpc.id
 
@@ -42,7 +43,7 @@ resource "aws_route_table" "devopsshack_route_table" {
     Name = "devopsshack-route-table"
   }
 }
-
+// association to subnet and  route table
 resource "aws_route_table_association" "a" {
   count          = 2
   subnet_id      = aws_subnet.devopsshack_subnet[count.index].id
